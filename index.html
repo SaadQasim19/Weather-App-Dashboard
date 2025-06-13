@@ -37,6 +37,87 @@
                 </div>
             </div>
         </header>
+        <main class="app-main animate__animated animate__fadeInUp">
+            <div class="weather-tabs">
+                <button class="tab-btn active" data-tab="current">
+                    <i class="fas fa-sun"></i> Current
+                </button>
+                <button class="tab-btn" data-tab="hourly">
+                    <i class="fas fa-clock"></i> Hourly
+                </button>
+                <button class="tab-btn" data-tab="daily">
+                    <i class="fas fa-calendar-day"></i> Daily
+                </button>
+                <button class="tab-btn" data-tab="graphs">
+                    <i class="fas fa-chart-line"></i> Graphs
+                </button>
+            </div>
+
+            <div class="tab-content active" id="current-tab">
+                <div class="current-weather">
+                    <div class="weather-main">
+                        <div class="temperature-container">
+                            <span id="current-temp">--</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <div id="weather-icon" class="weather-icon"></div>
+                    </div>
+                    <div class="weather-details">
+                        <div class="detail-item">
+                            <i class="fas fa-temperature-low"></i>
+                            <span class="detail-label">Feels Like</span>
+                            <span id="feels-like" class="detail-value">--°C</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tint"></i>
+                            <span class="detail-label">Humidity</span>
+                            <span id="humidity" class="detail-value">--%</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-wind"></i>
+                            <span class="detail-label">Wind Speed</span>
+                            <span id="wind-speed" class="detail-value">-- km/h</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="detail-label">Pressure</span>
+                            <span id="pressure" class="detail-value">-- hPa</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-info">
+                    <h2 id="location-name">--</h2>
+                    <p id="current-date">--</p>
+                    <p id="weather-description">--</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="hourly-tab">
+                <div class="hourly-forecast-container">
+                    <div class="hourly-scroll">
+                        <!-- Hourly forecast items will be added here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="daily-tab">
+                <div class="daily-forecast-container">
+                    <!-- Daily forecast items will be added here by JavaScript -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="graphs-tab">
+                <div class="graph-container">
+                    <canvas id="temperature-chart"></canvas>
+                </div>
+                <div class="graph-container">
+                    <canvas id="precipitation-chart"></canvas>
+                </div>
+                <div class="graph-container">
+                    <canvas id="wind-chart"></canvas>
+                </div>
+            </div>
+        </main>
     <script src="script.js"></script>
 </body>
 </html>
