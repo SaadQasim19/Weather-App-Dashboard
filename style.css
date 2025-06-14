@@ -216,7 +216,7 @@
   width: 100% !important;
   height: 300px !important;
 }
-app-footer {
+.app-footer {
   text-align: center;
   margin-top: 40px;
   padding-top: 20px;
@@ -280,11 +280,213 @@ app-footer {
   #current-temp {
       font-size: 4rem;
   }
-  
+  .temp-unit {
+    font-size: 2rem;
+    opacity: 0.8;
+    margin-top: 10px;
+}
   .weather-icon {
       width: 100px;
       height: 100px;
   }
+}
+.detail-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  transition: var(--transition);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item:hover {
+  transform: translateY(-8px) scale(1.03);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.detail-item i {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: var(--accent-color);
+}
+.detail-label {
+  display: block;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 5px;
+}
+
+.detail-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+}
+.location-info {
+  width: 100%;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.location-info h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.location-info p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+}
+.hourly-forecast-container {
+  background: var(--glass-effect);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--glass-shadow);
+  margin-bottom: 30px;
+  border: var(--glass-border);
+  overflow-x: auto;
+}
+
+.hourly-scroll {
+  display: flex;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.hourly-item {
+  min-width: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  transition: var(--transition);
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.hourly-item:hover {
+  transform: translateY(-8px) scale(1.05);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hourly-time {
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.hourly-temp {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 10px 0;
+  color: white;
+}
+
+.hourly-precip {
+  font-size: 0.9rem;
+  color: var(--accent-color);
+}
+
+.hourly-icon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
+}
+.daily-forecast-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.daily-item {
+  background: var(--glass-effect);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: var(--glass-shadow);
+  transition: var(--transition);
+  cursor: pointer;
+  border: var(--glass-border);
+  text-align: center;
+}
+.daily-item:hover {
+  transform: translateY(-8px) scale(1.03);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.daily-day {
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.daily-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.2));
+}
+.daily-temp {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.daily-high, .daily-low {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.daily-high {
+  color: var(--warning-color);
+}
+
+.daily-low {
+  color: var(--accent-color);
+}
+
+.daily-precip {
+  color: var(--accent-color);
+  font-weight: 500;
+}
+.temperature-container {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+#current-temp {
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(45deg, #fff, #d1d1d1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.temp-unit {
+  font-size: 2rem;
+  opacity: 0.8;
+  margin-top: 10px;
 }
 
 @media (max-width: 480px) {
