@@ -202,3 +202,126 @@
 .tab-content.active {
   display: block;
 }
+.graph-container {
+  background: var(--glass-effect);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--glass-shadow);
+  margin-bottom: 30px;
+  border: var(--glass-border);
+}
+
+.graph-container canvas {
+  width: 100% !important;
+  height: 300px !important;
+}
+app-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.app-footer a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.app-footer a:hover {
+  color: white;
+  text-decoration: underline;
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-icons a {
+  color: white;
+  font-size: 1.2rem;
+  transition: var(--transition);
+}
+
+.social-icons a:hover {
+  transform: translateY(-3px) scale(1.2);
+  color: var(--accent-color);
+}
+.search-container button {
+  white-space: nowrap;
+  min-width: fit-content;
+}
+@media (max-width: 768px) {
+  .app-header h1 {
+      font-size: 2rem;
+  }
+  
+  .weather-main {
+      flex-direction: column;
+      gap: 20px;
+  }
+  
+  .weather-details {
+      grid-template-columns: 1fr;
+      width: 100%;
+  }
+  
+  .daily-forecast-container {
+      grid-template-columns: 1fr;
+  }
+  
+  #current-temp {
+      font-size: 4rem;
+  }
+  
+  .weather-icon {
+      width: 100px;
+      height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container {
+      flex-direction: column;
+      width: 100%;
+  }
+  
+  .search-container input, 
+  .search-container button {
+      width: 100%;
+  }
+  
+  .search-container button {
+      justify-content: center;
+      padding: 12px 15px;
+  }
+  
+  .weather-tabs {
+      flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+      padding: 10px 15px;
+      font-size: 0.9rem;
+  }
+  
+  .current-weather {
+      padding: 20px;
+  }
+  
+  .detail-item {
+      padding: 15px;
+  }
+  
+  .hourly-item {
+      min-width: 80px;
+      padding: 10px;
+  }
+}
