@@ -1,3 +1,5 @@
+// document.addEventListener('DOMContentLoaded', function() {
+
 //& DOM Elements
 const elements = {
     locationInput: document.getElementById('location-input'),
@@ -46,3 +48,44 @@ const tempBackgrounds = {
     warm: { maxTemp: 30, class: 'body-warm' },             // 20-30°C
     hot: { maxTemp: Infinity, class: 'body-hot' }          // 30°C+
 };
+
+//& Initialize the App
+function init() {
+    elements.dateInput.valueAsDate = new Date();
+    initParticles();
+    setupEventListeners();
+    elements.locationInput.value = 'London'; // Default location
+    fetchWeatherData();
+}
+//& Initialize the Floating Particles Animation
+function initParticles() {
+    const particles = document.querySelectorAll('.particle');
+    particles.forEach((particle, index) => {
+        gsap.to(particle, {
+            y: -window.innerHeight - 100,
+            rotation: 360,
+            duration: 15 + Math.random() * 10,
+            delay: index * 2,
+            ease: "none",
+            repeat: -1
+        });
+    });
+
+
+}
+//& Setup Event Listeners
+function setupEventListeners() {
+    elements.tabBtns.forEach(btn => {
+        btn.addEventListener('click', switchTab);
+    });
+
+    elements.searchBtn.addEventListener('click', () => {
+        animateButton(elements.searchBtn, fetchWeatherData);
+    });
+
+    elements.locationInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            animateButton(elements.searchBtn, fetchWeatherData);
+        }
+    });
+}
