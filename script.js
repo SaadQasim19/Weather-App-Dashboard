@@ -89,3 +89,45 @@ function setupEventListeners() {
         }
     });
 }
+
+//* Tab switching with animation
+
+function switchTab() {
+    const tabId = this.getAttribute('data-tab');
+    
+    gsap.to(elements.tabContents, {
+        opacity: 0,
+        y: 20,
+        duration: 0.3,
+        ease: "power2.out",
+        onComplete: () => {
+            elements.tabBtns.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            elements.tabContents.forEach(content => content.classList.remove('active'));
+            const activeTab = document.getElementById(`${tabId}-tab`);
+            activeTab.classList.add('active');
+            
+            gsap.fromTo(activeTab, 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.5, ease: "back.out" }
+            );
+            
+            if (tabId === 'graphs' && state.hourlyForecast) {
+                updateCharts();
+            }
+        }
+    });
+}
+
+//* Button animation
+    function animateButton(button, callback) {
+        gsap.to(button, {
+            scale: 0.95,
+            duration: 0.1,
+            yoyo: true,
+            repeat: 1,
+            ease: "power2.inOut",
+            onComplete: callback
+        });
+    }
