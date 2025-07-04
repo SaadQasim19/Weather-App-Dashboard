@@ -131,3 +131,39 @@ function switchTab() {
             onComplete: callback
         });
     }
+
+//* Main function to fetch weather data
+    async function fetchWeatherData() {
+        const location = elements.locationInput.value.trim();
+        const date = elements.dateInput.value;
+        
+        if (!location) {
+            showError();
+            return;
+        }
+        
+        try {
+            setLoadingState(true);
+            
+//* Step 1: Geocoding - Get coordinates from location name
+            
+            const coords = await getCoordinates(location);
+            if (!coords) throw new Error('Location not found');
+            
+ //* Step 2: Get weather data
+
+            const weatherData = await getWeatherData(coords, date);
+            
+//* Step 3: Process and display data
+
+
+            processWeatherData(weatherData, new Date(date));
+            updateUI();
+            
+        } catch (error) {
+            console.error('Error:', error);
+            showError();
+        } finally {
+            setLoadingState(false);
+        }
+    }
