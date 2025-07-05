@@ -168,3 +168,31 @@ async function fetchWeatherData() {
     setLoadingState(false);
   }
 }
+
+//* ----------- Get coordinates from location name -----------------
+
+  async function getCoordinates(location) {
+    const geocodingUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1`;
+    const response = await fetch(geocodingUrl);
+    const data = await response.json();
+    
+    if (!data.results || data.results.length === 0) return null;
+    
+    const { latitude, longitude, name, admin1, country } = data.results[0];
+    animateLocationChange(`${name}, ${admin1 || ''} ${country}`);
+    
+    return { latitude, longitude };
+}
+
+//* ----------- Get weather data from coordinates ------------------
+
+   async function getWeatherData(coords, date) {
+    const selectedDate = new Date(date);
+    const startDate = formatDate(selectedDate);
+    const endDate = formatDate(new Date(selectedDate.getTime() + 86400000)); // +1 day
+    
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,weathercode,windspeed_10m,winddirection_10m,pressure_msl&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,windspeed_10m_max,winddirection_10m_dominant&timezone=auto&start_date=${startDate}&end_date=${endDate}`;
+    
+    const response = await fetch(weatherUrl);
+    return await response.json();
+}
