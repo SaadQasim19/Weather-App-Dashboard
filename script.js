@@ -1,4 +1,4 @@
-// document.addEventListener('DOMContentLoaded', function() {
+//! document.addEventListener('DOMContentLoaded', function() {
 
 //& DOM Elements
 const elements = {
@@ -196,3 +196,89 @@ async function fetchWeatherData() {
     const response = await fetch(weatherUrl);
     return await response.json();
 }
+
+//* ------------------------ Process raw weather data into app state ----------------------
+
+    function processWeatherData(data, selectedDate) {
+      const now = new Date();
+      const isToday = selectedDate.toDateString() === now.toDateString();
+      const currentHour = isToday ? now.getHours() : 12; // Default to noon if not today
+      
+      const selectedDateStr = selectedDate.toISOString().split('T')[0];
+      const startIndex = data.hourly.time.findIndex(time => time.startsWith(selectedDateStr));
+      
+//~ Process hourly forecast data
+
+      state.hourlyForecast = {
+          time: data.hourly.time.slice(startIndex, startIndex + 24),
+          temperature: data.hourly.temperature_2m.slice(startIndex, startIndex + 24),
+          apparentTemperature: data.hourly.apparent_temperature.slice(startIndex, startIndex + 24),
+          humidity: data.hourly.relativehumidity_2m.slice(startIndex, startIndex + 24),
+          precipitationProbability: data.hourly.precipitation_probability.slice(startIndex, startIndex + 24),
+          weatherCode: data.hourly.weathercode.slice(startIndex, startIndex + 24),
+          windSpeed: data.hourly.windspeed_10m.slice(startIndex, startIndex + 24),
+          windDirection: data.hourly.winddirection_10m.slice(startIndex, startIndex + 24),
+          pressure: data.hourly.pressure_msl.slice(startIndex, startIndex + 24)
+      };
+      
+  //~ Process current weather data
+
+      state.currentWeather = {
+          temperature: data.hourly.temperature_2m[startIndex + currentHour],
+          apparentTemperature: data.hourly.apparent_temperature[startIndex + currentHour],
+          humidity: data.hourly.relativehumidity_2m[startIndex + currentHour],
+          precipitationProbability: data.hourly.precipitation_probability[startIndex + currentHour],
+          weatherCode: data.hourly.weathercode[startIndex + currentHour],
+          windSpeed: data.hourly.windspeed_10m[startIndex + currentHour],
+          windDirection: data.hourly.winddirection_10m[startIndex + currentHour],
+          pressure: data.hourly.pressure_msl[startIndex + currentHour]
+      };
+      
+//~ Process daily forecast data
+//~ Process raw weather data into app state
+
+    function processWeatherData(data, selectedDate) {
+      const now = new Date();
+      const isToday = selectedDate.toDateString() === now.toDateString();
+      const currentHour = isToday ? now.getHours() : 12;                  //! Default to noon if not today
+      
+      const selectedDateStr = selectedDate.toISOString().split('T')[0];
+      const startIndex = data.hourly.time.findIndex(time => time.startsWith(selectedDateStr));
+      
+//~ Process hourly forecast data
+      state.hourlyForecast = {
+          time: data.hourly.time.slice(startIndex, startIndex + 24),
+          temperature: data.hourly.temperature_2m.slice(startIndex, startIndex + 24),
+          apparentTemperature: data.hourly.apparent_temperature.slice(startIndex, startIndex + 24),
+          humidity: data.hourly.relativehumidity_2m.slice(startIndex, startIndex + 24),
+          precipitationProbability: data.hourly.precipitation_probability.slice(startIndex, startIndex + 24),
+          weatherCode: data.hourly.weathercode.slice(startIndex, startIndex + 24),
+          windSpeed: data.hourly.windspeed_10m.slice(startIndex, startIndex + 24),
+          windDirection: data.hourly.winddirection_10m.slice(startIndex, startIndex + 24),
+          pressure: data.hourly.pressure_msl.slice(startIndex, startIndex + 24)
+      };
+      
+//~ Process current weather data
+      state.currentWeather = {
+          temperature: data.hourly.temperature_2m[startIndex + currentHour],
+          apparentTemperature: data.hourly.apparent_temperature[startIndex + currentHour],
+          humidity: data.hourly.relativehumidity_2m[startIndex + currentHour],
+          precipitationProbability: data.hourly.precipitation_probability[startIndex + currentHour],
+          weatherCode: data.hourly.weathercode[startIndex + currentHour],
+          windSpeed: data.hourly.windspeed_10m[startIndex + currentHour],
+          windDirection: data.hourly.winddirection_10m[startIndex + currentHour],
+          pressure: data.hourly.pressure_msl[startIndex + currentHour]
+      };
+      
+//~ Process daily forecast data
+      state.dailyForecast = {
+          time: data.daily.time,
+          weatherCode: data.daily.weathercode,
+          temperatureMax: data.daily.temperature_2m_max,
+          temperatureMin: data.daily.temperature_2m_min,
+          precipitationProbability: data.daily.precipitation_probability_max,
+          windSpeed: data.daily.windspeed_10m_max,
+          windDirection: data.daily.winddirection_10m_dominant
+      };
+  }
+  }
