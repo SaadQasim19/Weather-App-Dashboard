@@ -281,4 +281,91 @@ async function fetchWeatherData() {
           windDirection: data.daily.winddirection_10m_dominant
       };
   }
+
+
+ //* ------------------------------- Update all UI elements --------------------------
+ function updateUI() {
+  updateBackground(state.currentWeather.weatherCode, state.currentWeather.temperature);
+
+  updateCurrentWeather();
+  updateHourlyForecast();
+  updateDailyForecast();
+  updateDateDisplay();
+}
+
+// Update background based on weather condition
+function updateBackground(weatherCode, temperature) {
+  // Remove all weather and temperature classes first
+  const classesToRemove = [
+      'body-clear', 'body-cloudy', 'body-rainy', 'body-snowy', 'body-stormy',
+      'body-freezing', 'body-cold', 'body-cool', 'body-warm', 'body-hot'
+  ];
+  elements.body.classList.remove(...classesToRemove);
+  
+  // 1. Determine weather class based on weather code
+  let weatherClass = 'body-cloudy'; // Default
+  for (const [weatherType, codes] of Object.entries(weatherBackgrounds)) {
+      if (codes.includes(weatherCode)) {
+          weatherClass = `body-${weatherType}`;
+          break;
+      }
+  }
+  
+  // 2. Determine temperature class
+  let tempClass = 'body-cool'; // Default
+  for (const [_, range] of Object.entries(tempBackgrounds)) {
+      if (temperature <= range.maxTemp) {
+          tempClass = range.class;
+          break;
+      }
+  }
+  
+  // Combine both classes with animation
+  gsap.to(elements.body, {
+      duration: 1.5,
+      onComplete: () => {
+          elements.body.classList.add(weatherClass, tempClass);
+      }
+  });
+}
+
+ //* -------------------------- Update current weather display --------------------
+ function updateCurrentWeather() {
+  const weatherInfo = getWeatherInfo(state.currentWeather.weatherCode);
+  
+  // Animate temperature change
+  animateValue(elements.currentTemp, Math.round(state.currentWeather.temperature));
+  
+  // Update other values with animation
+  animateValue(elements.feelsLike, `${Math.round(state.currentWeather.apparentTemperature)}°C`);
+  animateValue(elements.humidity, `${state.currentWeather.humidity}%`);
+  animateValue(elements.windSpeed, `${state.currentWeather.windSpeed} km/h`);
+  animateValue(elements.pressure, `${state.currentWeather.pressure} hPa`);
+  
+  // Update weather description and icon
+  elements.weatherDescription.textContent = weatherInfo.description;
+  
+  // Animate weather icon change
+  gsap.to(elements.weatherIcon, {
+      opacity: 0,
+      duration: 0.3,
+      onComplete: () => {
+          elements.weatherIcon.style.backgroundImage = `url('${weatherInfo.icon}')`;
+          gsap.to(elements.weatherIcon, {
+              opacity: 1,
+              duration: 0.5
+          });
+      }
+  });
+  
+  // Animate detail items
+  gsap.to(".detail-item", {
+      y: -10,
+      opacity: 1,
+      stagger: 0.1,
+      duration: 0.5,
+      ease: "back.out"
+  });
+}
+
   }
