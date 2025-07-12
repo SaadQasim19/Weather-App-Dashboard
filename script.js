@@ -368,4 +368,73 @@ function updateBackground(weatherCode, temperature) {
   });
 }
 
+ //* ---------------------- Update hourly forecast display -------------------------
+    function updateHourlyForecast() {
+        elements.hourlyContainer.innerHTML = '';
+        
+        state.hourlyForecast.time.forEach((time, index) => {
+            const date = new Date(time);
+            const hour = date.getHours();
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            
+            const weatherInfo = getWeatherInfo(state.hourlyForecast.weatherCode[index]);
+            
+            const hourlyItem = document.createElement('div');
+            hourlyItem.className = 'hourly-item';
+            hourlyItem.innerHTML = `
+                <div class="hourly-time">${displayHour} ${ampm}</div>
+                <div class="hourly-icon" style="background-image: url('${weatherInfo.icon}')"></div>
+                <div class="hourly-temp">${Math.round(state.hourlyForecast.temperature[index])}°</div>
+                <div class="hourly-precip">${state.hourlyForecast.precipitationProbability[index]}%</div>
+            `;
+            
+            // Add animation to each hourly item
+            gsap.from(hourlyItem, {
+                opacity: 0,
+                y: 20,
+                duration: 0.5,
+                delay: index * 0.05,
+                ease: "back.out"
+            });
+            
+            elements.hourlyContainer.appendChild(hourlyItem);
+        });
+    }
+
+    //* ------------------- Update daily forecast display ------------------
+    function updateDailyForecast() {
+        elements.dailyContainer.innerHTML = '';
+        
+        state.dailyForecast.time.forEach((time, index) => {
+            const date = new Date(time);
+            const day = date.toLocaleDateString('en-US', { weekday: 'short' });
+            
+            const weatherInfo = getWeatherInfo(state.dailyForecast.weatherCode[index]);
+            
+            const dailyItem = document.createElement('div');
+            dailyItem.className = 'daily-item';
+            dailyItem.innerHTML = `
+                <div class="daily-day">${day}</div>
+                <div class="daily-icon" style="background-image: url('${weatherInfo.icon}')"></div>
+                <div class="daily-temp">
+                    <span class="daily-high">${Math.round(state.dailyForecast.temperatureMax[index])}°</span>
+                    <span class="daily-low">${Math.round(state.dailyForecast.temperatureMin[index])}°</span>
+                </div>
+                <div class="daily-precip">${state.dailyForecast.precipitationProbability[index]}%</div>
+            `;
+            
+            // Add animation to each daily item
+            gsap.from(dailyItem, {
+                opacity: 0,
+                y: 20,
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: "back.out"
+            });
+            
+            elements.dailyContainer.appendChild(dailyItem);
+        });
+    }
+
   }
