@@ -436,5 +436,58 @@ function updateBackground(weatherCode, temperature) {
             elements.dailyContainer.appendChild(dailyItem);
         });
     }
+//* ---------------------------- Update date display -------------------
+       function updateDateDisplay() {
+        const selectedDate = new Date(elements.dateInput.value);
+        const formattedDate = selectedDate.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        
+        gsap.to(elements.currentDate, {
+            opacity: 0,
+            duration: 0.3,
+            onComplete: () => {
+                elements.currentDate.textContent = formattedDate;
+                gsap.to(elements.currentDate, { opacity: 1, duration: 0.5 });
+            }
+        });
+    }
+    
+//* ----------------------------- Update weather charts -------------------
+    function updateCharts() {
+        // Destroy existing charts if they exist
+        if (state.tempChart) state.tempChart.destroy();
+        if (state.precipChart) state.precipChart.destroy();
+        if (state.windChart) state.windChart.destroy();
+        
+        // Prepare labels (hours)
+        const labels = state.hourlyForecast.time.map(time => {
+            return new Date(time).getHours() + ':00';
+        });
+        
+        // Create new charts
+        state.tempChart = createTemperatureChart(labels);
+        state.precipChart = createPrecipitationChart(labels);
+        state.windChart = createWindChart(labels);
+    }
+
+    // Helper Functions
+    function formatDate(date) {
+        return date.toISOString().split('T')[0];
+    }
+
+    function setLoadingState(isLoading) {
+        elements.searchBtn.disabled = isLoading;
+        gsap.to(elements.searchBtn, {
+            backgroundColor: isLoading ? "#3a0ca3" : "#4361ee",
+            duration: 0.3
+        });
+        elements.searchBtn.innerHTML = isLoading 
+            ? '<i class="fas fa-spinner fa-spin"></i> Loading...' 
+            : '<i class="fas fa-cloud-sun-rain"></i> Get Forecast';
+    }
 
   }
