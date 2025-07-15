@@ -489,5 +489,111 @@ function updateBackground(weatherCode, temperature) {
             ? '<i class="fas fa-spinner fa-spin"></i> Loading...' 
             : '<i class="fas fa-cloud-sun-rain"></i> Get Forecast';
     }
+    function showError() {
+      gsap.to(elements.searchBtn, {
+          backgroundColor: "#ef233c",
+          duration: 0.3
+      });
+      
+      gsap.to(elements.locationInput, {
+          x: [-5, 5, -5, 5, 0],
+          duration: 0.5,
+          ease: "power1.inOut"
+      });
+      
+      alert('Failed to fetch weather data. Please try again.');
+  }
+  function animateLocationChange(newLocation) {
+    gsap.to(elements.locationName, {
+        opacity: 0,
+        y: -10,
+        duration: 0.3,
+        onComplete: () => {
+            elements.locationName.textContent = newLocation;
+            gsap.to(elements.locationName, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "back.out"
+            });
+        }
+    });
+}
+
+function animateValue(element, newValue) {
+    gsap.to(element, {
+        textContent: newValue,
+        duration: 0.8,
+        snap: { textContent: 1 },
+        ease: "power2.out"
+    });
+}
+//* --------------------- Chart Creation Functions --------------------
+    function createTemperatureChart(labels) {
+      return new Chart(elements.tempChartCtx, {
+          type: 'line',
+          data: {
+              labels: labels,
+              datasets: [
+                  {
+                      label: 'Temperature (°C)',
+                      data: state.hourlyForecast.temperature,
+                      borderColor: 'rgba(255, 99, 132, 1)',
+                      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                      borderWidth: 3,
+                      tension: 0.4,
+                      fill: true,
+                      pointBackgroundColor: 'white',
+                      pointBorderColor: 'rgba(255, 99, 132, 1)',
+                      pointRadius: 4,
+                      pointHoverRadius: 6
+                  },
+                  {
+                      label: 'Feels Like (°C)',
+                      data: state.hourlyForecast.apparentTemperature,
+                      borderColor: 'rgba(54, 162, 235, 1)',
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                      borderWidth: 3,
+                      tension: 0.4,
+                      fill: true,
+                      pointBackgroundColor: 'white',
+                      pointBorderColor: 'rgba(54, 162, 235, 1)',
+                      pointRadius: 4,
+                      pointHoverRadius: 6
+                  }
+              ]
+          },
+          options: getChartOptions('Temperature Forecast', '°C')
+      });
+  }
+
+  function createPrecipitationChart(labels) {
+      return new Chart(elements.precipChartCtx, {
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: [
+                  {
+                      label: 'Precipitation Probability (%)',
+                      data: state.hourlyForecast.precipitationProbability,
+                      backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                      borderColor: 'rgba(75, 192, 192, 1)',
+                      borderWidth: 1
+                  },
+                  {
+                      label: 'Humidity (%)',
+                      data: state.hourlyForecast.humidity,
+                      backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                      borderColor: 'rgba(153, 102, 255, 1)',
+                      borderWidth: 2,
+                      type: 'line',
+                      tension: 0.4,
+                      fill: false
+                  }
+              ]
+          },
+          options: getChartOptions('Precipitation & Humidity', '%', true)
+      });
+  }
 
   }
