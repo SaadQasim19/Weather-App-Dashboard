@@ -595,5 +595,139 @@ function animateValue(element, newValue) {
           options: getChartOptions('Precipitation & Humidity', '%', true)
       });
   }
+//* ------------------------------ Create Wind Chart ------------------------------
+  function createWindChart(labels) {
+    return new Chart(elements.windChartCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Wind Speed (km/h)',
+                    data: state.hourlyForecast.windSpeed,
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    yAxisID: 'y',
+                    pointBackgroundColor: 'white',
+                    pointBorderColor: 'rgba(255, 159, 64, 1)',
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                },
+                {
+                    label: 'Wind Direction (°)',
+                    data: state.hourlyForecast.windDirection,
+                    borderColor: 'rgba(201, 203, 207, 1)',
+                    backgroundColor: 'rgba(201, 203, 207, 0.2)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: false,
+                    yAxisID: 'y1',
+                    pointBackgroundColor: 'white',
+                    pointBorderColor: 'rgba(201, 203, 207, 1)',
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }
+            ]
+        },
+        options: getChartOptions('Wind Speed & Direction', '', false, true)
+    });
+}
+//* --------------------- Get Chart Options --------------------
 
+function getChartOptions(title, unit = '', isBarChart = false, dualAxis = false) {
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: title,
+                font: { size: 18, family: 'Poppins' },
+                color: '#fff',
+                padding: { top: 10, bottom: 20 }
+            },
+            legend: {
+                labels: { 
+                    color: '#fff', 
+                    font: { family: 'Poppins', size: 12 },
+                    padding: 20,
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                },
+                position: 'top',
+                align: 'center'
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                titleFont: { family: 'Poppins', size: 14 },
+                bodyFont: { family: 'Poppins', size: 12 },
+                padding: 10,
+                usePointStyle: true
+            }
+        },
+        scales: {
+            x: {
+                ticks: { 
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    font: { family: 'Poppins' }
+                },
+                grid: { 
+                    color: 'rgba(255, 255, 255, 0.1)',
+                    drawBorder: false
+                }
+            },
+            y: {
+                ticks: { 
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    font: { family: 'Poppins' }
+                },
+                grid: { 
+                    color: 'rgba(255, 255, 255, 0.1)',
+                    drawBorder: false
+                },
+                title: { 
+                    display: !!unit,
+                    text: unit,
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    font: { family: 'Poppins' }
+                }
+            }
+        },
+        animation: {
+            duration: 1000,
+            easing: 'easeOutQuart'
+        }
+    };
+    
+    if (isBarChart) {
+        options.scales.x.grid.display = false;
+    }
+    
+    if (dualAxis) {
+        options.scales.y1 = {
+            position: 'right',
+            min: 0,
+            max: 360,
+            ticks: { 
+                color: 'rgba(255, 255, 255, 0.8)',
+                font: { family: 'Poppins' }
+            },
+            grid: {
+                drawOnChartArea: false,
+                drawBorder: false
+            },
+            title: { 
+                display: true,
+                text: '°',
+                color: 'rgba(255, 255, 255, 0.8)',
+                font: { family: 'Poppins' }
+            }
+        };
+    }
+    
+    return options;
+}
   }
